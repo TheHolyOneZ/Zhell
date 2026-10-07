@@ -94,7 +94,7 @@ fn cmd_output_and_exit_code_come_through_conpty() {
 fn typing_reaches_cmd() {
     let s = Session::start(cmd(&["/q", "/k"]));
     s.host.send(ClientMsg::Input { pane: s.pane, bytes: b"echo typed-%COMPUTERNAME%\r".to_vec() });
-    let (mirror, _, _) = s.until(|m, _| m.text().contains("typed-") && !m.text().contains("typed-%"));
+    let (mirror, _, _) = s.until(|m, _| m.text().lines().any(|l| l.starts_with("typed-") && !l.contains('%')));
     s.host.send(ClientMsg::Input { pane: s.pane, bytes: b"exit\r".to_vec() });
     let (_, _, exit) = s.until(|_, _| false);
     assert!(mirror.text().contains("typed-"), "{:?}", mirror.text());
