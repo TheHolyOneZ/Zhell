@@ -10,15 +10,16 @@ authors = ["TheHolyOneZ"]
 homepage = "https://zsync.eu/zhell/"
 repository = "https://github.com/TheHolyOneZ/Zhell"
 rust-version = "1.88"
+publish = false
 
 [workspace.dependencies]
-zhell-proto = { path = "crates/zhell-proto" }
-zhell-core = { path = "crates/zhell-core" }
-zhell-daemon = { path = "crates/zhell-daemon" }
-zhell-render = { path = "crates/zhell-render" }
-zhell-ui = { path = "crates/zhell-ui" }
-zhell-history = { path = "crates/zhell-history" }
-zhell-secrets = { path = "crates/zhell-secrets" }
+zhell-proto = { path = "crates/zhell-proto", version = "0.1.0" }
+zhell-core = { path = "crates/zhell-core", version = "0.1.0" }
+zhell-daemon = { path = "crates/zhell-daemon", version = "0.1.0" }
+zhell-render = { path = "crates/zhell-render", version = "0.1.0" }
+zhell-ui = { path = "crates/zhell-ui", version = "0.1.0" }
+zhell-history = { path = "crates/zhell-history", version = "0.1.0" }
+zhell-secrets = { path = "crates/zhell-secrets", version = "0.1.0" }
 
 alacritty_terminal = "0.26"
 portable-pty = "0.9"

@@ -3,6 +3,10 @@ all-features = false
 
 [advisories]
 version = 2
+ignore = [
+    { id = "RUSTSEC-2025-0141", reason = "bincode is unmaintained, not vulnerable; used only for local session snapshots" },
+    { id = "RUSTSEC-2026-0192", reason = "ttf-parser is unmaintained, not vulnerable; comes in through cosmic-text" },
+]
 yanked = "deny"
 
 [licenses]

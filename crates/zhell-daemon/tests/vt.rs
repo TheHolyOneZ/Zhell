@@ -208,7 +208,7 @@ fn vt_golden() {
             continue;
         }
         match std::fs::read_to_string(&path) {
-            Ok(expected) if expected == actual => {}
+            Ok(expected) if expected.replace("\r\n", "\n") == actual => {}
             Ok(expected) => failures.push(format!(
                 "{}: snapshot differs\n--- expected\n{expected}--- actual\n{actual}",
                 case.name

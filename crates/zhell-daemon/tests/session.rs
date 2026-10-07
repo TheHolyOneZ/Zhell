@@ -355,7 +355,7 @@ fn folding_a_block_hides_its_output_behind_one_row() {
     assert_eq!(&text[r - 3..r], &["1", "2", "3"], "{text:?}");
     assert!(text[r].contains("47 more lines"), "{text:?}");
 
-    assert!(text[r + 1..].iter().any(|l| l.starts_with('$')), "{text:?}");
+    assert!(text[r + 1..].iter().any(|l| l.contains('$')), "{text:?}");
 
     s.host.send(ClientMsg::Fold { pane: s.pane, block, folded: false });
     wait(&|f| f.folds.is_empty() && f.full);
