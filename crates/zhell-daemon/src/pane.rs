@@ -119,6 +119,8 @@ struct ReaderState {
     events: Sender<Event>,
     recorder: Option<Recorder>,
     cast: Arc<Mutex<Option<crate::cast::Cast>>>,
+    last_read: Arc<std::sync::atomic::AtomicU64>,
+    started: std::time::Instant,
 }
 
 pub struct Find {
@@ -245,12 +247,36 @@ impl Pane {
             events: internal,
             recorder,
             cast: cast.clone(),
+            last_read: Arc::new(std::sync::atomic::AtomicU64::new(0)),
+            started: std::time::Instant::now(),
         };
+        #[cfg(not(windows))]
         thread::Builder::new().name(format!("pane-{}-reader", id.0)).spawn(move || {
             read_loop(reader, &state);
             let code = child.wait().ok().map(|s| s.exit_code() as i32);
             let _ = state.events.send(Event::Exited(id, code));
         })?;
+        #[cfg(windows)]
+        {
+            use std::sync::atomic::Ordering;
+            let events = state.events.clone();
+            let last_read = state.last_read.clone();
+            let started = state.started;
+            thread::Builder::new().name(format!("pane-{}-reader", id.0)).spawn(move || read_loop(reader, &state))?;
+            thread::Builder::new().name(format!("pane-{}-wait", id.0)).spawn(move || {
+                let code = child.wait().ok().map(|s| s.exit_code() as i32);
+                let exited = started.elapsed().as_millis() as u64;
+                let deadline = std::time::Instant::now() + std::time::Duration::from_secs(1);
+                while std::time::Instant::now() < deadline {
+                    let idle = (started.elapsed().as_millis() as u64).saturating_sub(last_read.load(Ordering::Relaxed).max(exited));
+                    if idle >= 100 {
+                        break;
+                    }
+                    thread::sleep(std::time::Duration::from_millis(20));
+                }
+                let _ = events.send(Event::Exited(id, code));
+            })?;
+        }
 
         Ok(Self {
             id,
@@ -925,6 +951,7 @@ fn read_loop(mut reader: Box<dyn Read + Send>, st: &ReaderState) {
             Err(e) if e.kind() == std::io::ErrorKind::Interrupted => continue,
             Err(_) => break,
         };
+        st.last_read.store(st.started.elapsed().as_millis() as u64, std::sync::atomic::Ordering::Relaxed);
         let bytes = &buf[..n];
         if let Some(c) = st.cast.lock().as_mut() {
             c.output(bytes);

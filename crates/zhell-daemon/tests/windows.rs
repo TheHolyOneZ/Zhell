@@ -107,9 +107,12 @@ fn default_shell_reports_blocks_and_folder() {
     let s = Session::start(spec);
 
     let prompt_seen = |o: &[ServerMsg]| o.iter().any(|m| matches!(m, ServerMsg::Mark { mark, .. } if mark.kind == MarkKind::PromptStart));
-    s.until(|_, o| prompt_seen(o));
+    let (_, mut other, _) = s.until(|_, o| prompt_seen(o));
     s.host.send(ClientMsg::Input { pane: s.pane, bytes: b"echo block-test\r".to_vec() });
-    let (mirror, other, _) = s.until(|_, o| o.iter().filter(|m| matches!(m, ServerMsg::Mark { mark, .. } if matches!(mark.kind, MarkKind::CommandFinished { .. }))).count() >= 1);
+    let finished = |o: &[ServerMsg]| o.iter().any(|m| matches!(m, ServerMsg::Mark { mark, .. } if matches!(mark.kind, MarkKind::CommandFinished { .. })));
+    let cwd = |o: &[ServerMsg]| o.iter().any(|m| matches!(m, ServerMsg::Cwd { .. }));
+    let (mirror, more, _) = s.until(|_, o| finished(o) && cwd(o));
+    other.extend(more);
     assert!(mirror.text().contains("block-test"), "{:?}", mirror.text());
     assert!(other.iter().any(|m| matches!(m, ServerMsg::Cwd { cwd, .. } if cwd.contains(':'))), "no folder reported: {other:?}");
     s.host.send(ClientMsg::Input { pane: s.pane, bytes: b"exit\r".to_vec() });
