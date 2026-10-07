@@ -1,0 +1,69 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+authors = ["TheHolyOneZ"]
+homepage = "https://zsync.eu/zhell/"
+repository = "https://github.com/TheHolyOneZ/Zhell"
+rust-version = "1.88"
+
+[workspace.dependencies]
+zhell-proto = { path = "crates/zhell-proto" }
+zhell-core = { path = "crates/zhell-core" }
+zhell-daemon = { path = "crates/zhell-daemon" }
+zhell-render = { path = "crates/zhell-render" }
+zhell-ui = { path = "crates/zhell-ui" }
+zhell-history = { path = "crates/zhell-history" }
+zhell-secrets = { path = "crates/zhell-secrets" }
+
+alacritty_terminal = "0.26"
+portable-pty = "0.9"
+bincode = { version = "2", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+log = "0.4"
+thiserror = "2"
+base64 = "0.23"
+anyhow = "1"
+wgpu = "30"
+naga = { version = "30", features = ["wgsl-in"] }
+winit = "0.30"
+cosmic-text = "0.19"
+bytemuck = { version = "1", features = ["derive"] }
+pollster = "1"
+jiff = "0.2"
+env_logger = "0.11"
+arboard = "3"
+toml = "1"
+serde_json = "1"
+png = "0.18"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp", "gif", "bmp"] }
+notify-rust = "4"
+getrandom = "0.4"
+miniz_oxide = "0.9"
+notify = "8"
+dirs = "7"
+regex = "1"
+open = "5"
+unicode-width = "0.2"
+interprocess = "2"
+rusqlite = { version = "0.40", features = ["bundled-sqlcipher-vendored-openssl"] }
+keyring = { version = "3", default-features = false, features = ["async-secret-service", "async-io", "crypto-rust", "windows-native", "apple-native"] }
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+debug = false
+opt-level = 1

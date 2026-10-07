@@ -1,0 +1,96 @@
+[package]
+name = "zhell"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Zhell — a fast GPU terminal for Linux and Windows with command blocks, searchable history and sessions that survive closing the window"
+homepage.workspace = true
+repository.workspace = true
+readme = "../../README.md"
+keywords = ["terminal", "terminal-emulator", "gpu", "shell", "tui"]
+categories = ["command-line-utilities", "development-tools"]
+
+[lints]
+workspace = true
+
+[dependencies]
+zhell-proto.workspace = true
+zhell-core.workspace = true
+zhell-daemon.workspace = true
+zhell-render.workspace = true
+zhell-secrets.workspace = true
+winit.workspace = true
+pollster.workspace = true
+log.workspace = true
+env_logger.workspace = true
+anyhow.workspace = true
+arboard.workspace = true
+notify.workspace = true
+open.workspace = true
+unicode-width.workspace = true
+bincode.workspace = true
+dirs.workspace = true
+serde.workspace = true
+toml.workspace = true
+notify-rust.workspace = true
+image.workspace = true
+miniz_oxide.workspace = true
+jiff.workspace = true
+regex.workspace = true
+
+[target.'cfg(target_os = "linux")'.dependencies]
+x11rb = "0.14"
+
+# Linux packages, built by .github/workflows/release.yml (cargo deb / cargo generate-rpm).
+[package.metadata.deb]
+name = "zhell"
+maintainer = "TheHolyOneZ <https://zsync.eu>"
+copyright = "TheHolyOneZ"
+license-file = ["../../LICENSE", "0"]
+extended-description = """\
+Zhell is a fast, GPU-accelerated terminal emulator. Every command becomes a block \
+with its exit code and duration, every command and its output is searchable in a \
+local history, and shells keep running when the window closes."""
+section = "utils"
+priority = "optional"
+revision = ""
+depends = "$auto"
+assets = [
+    ["target/release/zhell", "usr/bin/", "755"],
+    ["target/release/zhelld", "usr/bin/", "755"],
+    ["../../assets/zhell.desktop", "usr/share/applications/", "644"],
+    ["../../assets/eu.zsync.zhell.metainfo.xml", "usr/share/metainfo/", "644"],
+    ["../../assets/icons/zhell-16.png", "usr/share/icons/hicolor/16x16/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-24.png", "usr/share/icons/hicolor/24x24/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-32.png", "usr/share/icons/hicolor/32x32/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-48.png", "usr/share/icons/hicolor/48x48/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-64.png", "usr/share/icons/hicolor/64x64/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-128.png", "usr/share/icons/hicolor/128x128/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-256.png", "usr/share/icons/hicolor/256x256/apps/zhell.png", "644"],
+    ["../../assets/icons/zhell-512.png", "usr/share/icons/hicolor/512x512/apps/zhell.png", "644"],
+    ["../../README.md", "usr/share/doc/zhell/", "644"],
+]
+
+[package.metadata.generate-rpm]
+name = "zhell"
+summary = "Fast GPU terminal with command blocks, searchable history and sessions that never get lost"
+url = "https://zsync.eu/zhell/"
+assets = [
+    { source = "target/release/zhell", dest = "/usr/bin/zhell", mode = "755" },
+    { source = "target/release/zhelld", dest = "/usr/bin/zhelld", mode = "755" },
+    { source = "../../assets/zhell.desktop", dest = "/usr/share/applications/zhell.desktop", mode = "644" },
+    { source = "../../assets/eu.zsync.zhell.metainfo.xml", dest = "/usr/share/metainfo/eu.zsync.zhell.metainfo.xml", mode = "644" },
+    { source = "../../assets/icons/zhell-16.png", dest = "/usr/share/icons/hicolor/16x16/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-24.png", dest = "/usr/share/icons/hicolor/24x24/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-32.png", dest = "/usr/share/icons/hicolor/32x32/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-48.png", dest = "/usr/share/icons/hicolor/48x48/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-64.png", dest = "/usr/share/icons/hicolor/64x64/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-128.png", dest = "/usr/share/icons/hicolor/128x128/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-256.png", dest = "/usr/share/icons/hicolor/256x256/apps/zhell.png", mode = "644" },
+    { source = "../../assets/icons/zhell-512.png", dest = "/usr/share/icons/hicolor/512x512/apps/zhell.png", mode = "644" },
+    { source = "../../LICENSE", dest = "/usr/share/licenses/zhell/LICENSE", mode = "644", doc = true },
+]
+
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1"

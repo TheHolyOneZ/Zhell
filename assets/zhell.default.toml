@@ -1,0 +1,115 @@
+# Zhell settings. Everything is optional: delete a line to get the default back.
+# Changes apply as soon as you save this file.
+
+# theme = "z-dark"   # z-dark, z-light, catppuccin-mocha, tokyo-night, dracula,
+#                    # gruvbox-dark, nord, solarized-dark, one-dark, rose-pine,
+#                    # or a path to your own theme .toml
+#                    # "auto" follows your desktop's dark/light setting:
+# theme_dark = "z-dark"
+# theme_light = "z-light"
+
+[font]
+# family = "JetBrains Mono"   # empty: the system monospace font
+# size = 15
+# line_height = 1.25
+# ligatures = true
+
+[window]
+# padding = 8
+# width = 960
+# height = 600
+# opacity = 0.94              # below 1.0 the desktop shows through (glass);
+#                             # Ctrl+Shift+wheel or the palette changes it live
+# text_background_opacity = 1.0   # coloured cell backgrounds (e.g. vim themes) too
+# blur = true                 # blur behind the window (KDE Plasma)
+# decorations = "custom"      # "system" for your desktop's own title bar
+# buttons = "minimal"         # window buttons: minimal, dots or none
+# smooth_scroll = true
+
+[background]
+# image = "~/Pictures/wall.jpg"   # png, jpeg, webp, gif, bmp
+# fit = "cover"               # cover, contain, stretch, tile, center
+# shader = "aurora"           # aurora, grid, nebula, or a .wgsl file with
+#                             # fn background(px: vec2<f32>, uv: vec2<f32>) -> vec4<f32>
+#                             # (zhell.time, zhell.resolution and zhell_image are available)
+# dim = 0.8                   # how much theme colour covers it (0.8 images, 0.35 shaders)
+# animate = true              # animated shaders run while the window is focused
+
+[quick_select]
+# Ctrl+Shift+J (or Ctrl+Shift+Space): label URLs, paths, hashes, IPs and numbers on screen;
+# type a label to copy, Shift+label to copy and paste. Extra patterns are tried first:
+# patterns = ["\\bJIRA-\\d+\\b"]
+
+[quake]
+# Drop-down window: bind a global shortcut in your desktop to  zhell --quake
+# width = 1.0                 # share of the screen
+# height = 0.45
+# hide_on_unfocus = true
+
+[effects]
+# crt = false                 # scanlines and a soft vignette
+
+[cursor]
+# style = "block"             # block, beam, underline
+# blink = false
+# smooth = true               # the cursor glides to its new position
+
+[shell]
+# program = "/usr/bin/zsh"    # empty: your login shell
+# args = []
+# integration = true          # command blocks; your dotfiles are not modified
+# [shell.env]
+# EDITOR = "nvim"
+
+[scrollback]
+# lines = 100000
+
+[links]
+# Ctrl+click on `file.rs:42` opens it here ({file} {line} {col}).
+# Empty: the system's default app.
+# editor = "code -g {file}:{line}:{col}"
+
+[sessions]
+# daemon = true               # shells survive closing or crashing the window
+# keep_alive = true           # closing the window keeps its shells running
+# restore_after_reboot = true
+
+[history]
+# enabled = true              # every command and its output, searchable (Ctrl+Shift+F)
+# max_size_mb = 2048
+# max_age_days = 0            # 0 keeps everything
+# exclude_dirs = ["~/private"]
+# encrypt = false             # encrypt on disk; the key is kept in your system keyring
+
+[notify]
+# enabled = true              # notify when a command finishes while you look elsewhere
+# min_seconds = 10
+
+[paste]
+# guard = true                # ask before pasting secrets into ssh or risky multi-line text
+# warn_multiline = true
+# auto_screen_share = true    # hide secrets on screen while OBS runs
+
+# [keys]
+# "ctrl+shift+t" = "new_tab"
+# "ctrl+shift+z" = "none"     # unbind a default
+# Actions: copy, paste, new_tab, close_pane, split_right, split_down, toggle_zoom,
+# next_tab, prev_tab, select_tab1..9, focus_left/right/up/down, font_bigger,
+# font_smaller, font_reset, scroll_page_up/down, scroll_top, scroll_bottom,
+# prev_block, next_block, search_history, command_palette, toggle_screen_share,
+# open_workspace, find, open_settings, rename_tab, new_window, move_to_new_window,
+# toggle_broadcast, toggle_recording, quick_select, copy_mode, opacity_up,
+# opacity_down, opacity_reset, resize_left/right/up/down,
+# install_remote_integration
+
+# [[ssh]]
+# name = "prod web"
+# host = "10.0.0.5"
+# user = "deploy"
+# port = 22
+# jump = "bastion"
+
+# [[profile]]
+# name = "Python"
+# program = "python3"
+# cwd = "~/projects"

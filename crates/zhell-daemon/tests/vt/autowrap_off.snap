@@ -1,0 +1,7 @@
+size 5x3  cursor row=2 col=3 Block
++-----+
+|abcdh|
+|12345|
+|678  |
++-----+
+row 1 col 4..5: wrap

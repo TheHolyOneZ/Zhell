@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --release --locked --bin zhell --bin zhelld
+      - name: Packages
+        run: |
+          cargo install --locked cargo-deb cargo-generate-rpm
+          version=$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name == "zhell") | .version')
+          mkdir -p dist
+          cargo deb -p zhell --no-build -o dist/
+          cargo generate-rpm -p crates/zhell -o dist/
+          dir="zhell-$version-linux-x86_64"
+          mkdir -p "$dir/icons"
+          cp target/release/zhell target/release/zhelld assets/zhell.desktop \
+             assets/eu.zsync.zhell.metainfo.xml LICENSE README.md assets/install.sh "$dir/"
+          cp assets/icons/zhell-{16,24,32,48,64,128,256,512}.png "$dir/icons/"
+          tar czf "dist/$dir.tar.gz" "$dir"
+          ls -la dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: dist/*
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: if (Test-Path C:\Strawberry\perl\bin\perl.exe) { echo "OPENSSL_SRC_PERL=C:\Strawberry\perl\bin\perl.exe" >> $env:GITHUB_ENV }
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --release --locked --bin zhell --bin zhelld
+      - name: Zip
+        shell: pwsh
+        run: |
+          $version = (cargo metadata --no-deps --format-version 1 | ConvertFrom-Json).packages | Where-Object name -eq 'zhell' | Select-Object -ExpandProperty version
+          $dir = "zhell-$version-windows-x86_64"
+          New-Item -ItemType Directory -Force -Path $dir, dist | Out-Null
+          Copy-Item target/release/zhell.exe, target/release/zhelld.exe, LICENSE, README.md -Destination $dir
+          Compress-Archive -Path $dir -DestinationPath "dist/$dir.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist/*
+
+  release:
+    needs: [linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Checksums
+        run: |
+          cd dist
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          draft: true
+          files: dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: dist/*

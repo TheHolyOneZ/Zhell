@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<component type="desktop-application">
+  <id>eu.zsync.zhell</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Zhell</name>
+  <summary>Fast GPU terminal that remembers every command and never loses a session</summary>
+  <developer id="eu.zsync">
+    <name>TheHolyOneZ</name>
+  </developer>
+  <description>
+    <p>
+      Zhell is a GPU-rendered terminal for Linux and Windows. Every command and its output
+      becomes a block you can copy, fold, rerun or share; everything you ran is kept in a
+      searchable local history; and your shells keep running when the window closes.
+    </p>
+    <ul>
+      <li>Command blocks with exit codes and durations, sticky headers and jump-to-command</li>
+      <li>Full-text history of every command and its output, with secrets redacted first</li>
+      <li>Sessions survive closing the window, crashes and updates</li>
+      <li>Tabs, splits, several windows and a drop-down mode</li>
+      <li>Copy mode with vim keys and quick select for URLs, paths and hashes</li>
+      <li>Shell integration that also works over SSH</li>
+      <li>Glass transparency, background images and live shader backgrounds, 10 themes</li>
+      <li>No accounts, no cloud, no telemetry</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">zhell.desktop</launchable>
+  <url type="homepage">https://zsync.eu/zhell/</url>
+  <url type="vcs-browser">https://github.com/TheHolyOneZ/Zhell</url>
+  <url type="bugtracker">https://github.com/TheHolyOneZ/Zhell/issues</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Command blocks with exit status and duration</caption>
+      <image>https://raw.githubusercontent.com/TheHolyOneZ/Zhell/main/docs/screenshots/blocks.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Searchable history of every command and its output</caption>
+      <image>https://raw.githubusercontent.com/TheHolyOneZ/Zhell/main/docs/screenshots/history.png</image>
+    </screenshot>
+  </screenshots>
+  <categories>
+    <category>System</category>
+    <category>TerminalEmulator</category>
+  </categories>
+  <keywords>
+    <keyword>terminal</keyword>
+    <keyword>shell</keyword>
+    <keyword>console</keyword>
+    <keyword>command line</keyword>
+    <keyword>gpu</keyword>
+  </keywords>
+  <provides>
+    <binary>zhell</binary>
+    <binary>zhelld</binary>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-10-07"/>
+  </releases>
+</component>

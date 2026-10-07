@@ -1,0 +1,41 @@
+# Maintainer: TheHolyOneZ <https://zsync.eu>
+pkgname=zhell
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Fast GPU terminal with command blocks, searchable history and sessions that never get lost"
+arch=('x86_64' 'aarch64')
+url="https://zsync.eu/zhell/"
+license=('GPL-3.0-or-later')
+depends=('gcc-libs' 'glibc' 'libxkbcommon' 'vulkan-icd-loader' 'fontconfig' 'libx11' 'libxcursor' 'libxrandr' 'libxi' 'wayland')
+makedepends=('cargo')
+optdepends=('xdg-utils: open links and files')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/TheHolyOneZ/Zhell/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+prepare() {
+    cd "Zhell-$pkgver"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+    cd "Zhell-$pkgver"
+    export RUSTUP_TOOLCHAIN=stable CARGO_TARGET_DIR=target
+    cargo build --frozen --release --bin zhell --bin zhelld
+}
+
+check() {
+    cd "Zhell-$pkgver"
+    cargo test --frozen --release --workspace
+}
+
+package() {
+    cd "Zhell-$pkgver"
+    install -Dm755 target/release/zhell target/release/zhelld -t "$pkgdir/usr/bin/"
+    install -Dm644 assets/zhell.desktop "$pkgdir/usr/share/applications/zhell.desktop"
+    install -Dm644 assets/eu.zsync.zhell.metainfo.xml -t "$pkgdir/usr/share/metainfo/"
+    for size in 16 24 32 48 64 128 256 512; do
+        install -Dm644 "assets/icons/zhell-$size.png" "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/zhell.png"
+    done
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

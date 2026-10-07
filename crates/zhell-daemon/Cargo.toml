@@ -1,0 +1,43 @@
+[package]
+name = "zhell-daemon"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Zhell session daemon (zhelld): keeps shells running, records history, serves windows"
+homepage.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+zhell-proto.workspace = true
+zhell-core.workspace = true
+zhell-history.workspace = true
+alacritty_terminal.workspace = true
+portable-pty.workspace = true
+crossbeam-channel.workspace = true
+parking_lot.workspace = true
+log.workspace = true
+anyhow.workspace = true
+interprocess.workspace = true
+env_logger.workspace = true
+dirs.workspace = true
+serde.workspace = true
+bincode.workspace = true
+png.workspace = true
+miniz_oxide.workspace = true
+base64.workspace = true
+regex.workspace = true
+serde_json.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+signal-hook = "0.4"
+
+[target.'cfg(windows)'.dependencies]
+widestring = "1"
+
+[[bin]]
+name = "zhelld"
+path = "src/bin/zhelld.rs"

@@ -1,0 +1,6 @@
+size 12x2  cursor row=0 col=9 Block
++------------+
+|link text   |
+|            |
++------------+
+row 0 col 0..4: link=https://zsync.eu

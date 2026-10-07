@@ -1,0 +1,9 @@
+foreground = "#2a2838"
+background = "#f7f6fb"
+cursor = "#7c3aed"
+selection = "#a78bfa"
+accent = "#7c3aed"
+ansi = [
+  "#2a2838",  "#cf314c",  "#2b7e39",  "#9b6400",  "#3b5bdb",  "#7c3aed",  "#0a7b8a",  "#b8b6c8",
+  "#6c6a80",  "#c43d5b",  "#2d7f3c",  "#956600",  "#4865dc",  "#8255d7",  "#0f7b88",  "#e2e0ec",
+]

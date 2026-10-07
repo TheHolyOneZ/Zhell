@@ -1,0 +1,21 @@
+[package]
+name = "zhell-history"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Zhell history store: SQLite full-text search over every command and its output, optionally encrypted"
+homepage.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+zhell-proto.workspace = true
+zhell-secrets.workspace = true
+rusqlite.workspace = true
+thiserror.workspace = true
+log.workspace = true
+keyring.workspace = true
+getrandom.workspace = true

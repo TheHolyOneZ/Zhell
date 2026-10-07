@@ -1,0 +1,20 @@
+size 20x3  cursor row=2 col=3 Block
++--------------------+
+|BIUSRDH.            |
+|rgotn               |
+|cud                 |
++--------------------+
+row 0 col 0..1: bold
+row 0 col 1..2: italic
+row 0 col 2..3: ul
+row 0 col 3..4: strike
+row 0 col 4..5: inverse
+row 0 col 5..6: dim
+row 0 col 6..7: hidden
+row 1 col 0..1: fg=n1
+row 1 col 1..2: fg=n1 bg=n2
+row 1 col 2..3: fg=i208 bg=n2
+row 1 col 3..4: fg=i208 bg=#010203
+row 2 col 0..1: curl
+row 2 col 1..2: ulc=#ff0000 curl
+row 2 col 2..3: ulc=#ff0000 ul2

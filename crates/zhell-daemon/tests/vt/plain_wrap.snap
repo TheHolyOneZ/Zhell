@@ -1,0 +1,9 @@
+size 10x4  cursor row=3 col=4 Block
++----------+
+|hello worl|
+|d, this wr|
+|aps       |
+|next      |
++----------+
+row 0 col 9..10: wrap
+row 1 col 9..10: wrap

@@ -1,0 +1,12 @@
+size 6x4  cursor row=3 col=2 Block
++------+
+|a中b  |
+|éx    |
+|abcde |
+|中    |
++------+
+row 0 col 1..2: wide
+row 0 col 2..3: spacer
+row 2 col 5..6: lspacer,wrap
+row 3 col 0..1: wide
+row 3 col 1..2: spacer

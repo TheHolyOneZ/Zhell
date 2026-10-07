@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Application
+Name=Zhell
+GenericName=Terminal
+Comment=Fast GPU terminal with command blocks, searchable history and sessions that never get lost
+Exec=zhell
+Icon=zhell
+Terminal=false
+StartupNotify=true
+StartupWMClass=zhell
+Categories=System;TerminalEmulator;
+Keywords=shell;prompt;command;commandline;cmd;terminal;console;emulator;gpu;ssh;history;tabs;split;
+Actions=NewWindow;DropDown;
+
+[Desktop Action NewWindow]
+Name=New Window
+Exec=zhell --new-window
+
+[Desktop Action DropDown]
+Name=Drop-down Terminal
+Exec=zhell --quake
