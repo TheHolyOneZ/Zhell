@@ -1,6 +1,6 @@
 # Maintainer: TheHolyOneZ <https://zsync.eu>
 pkgname=zhell
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="Fast GPU terminal with command blocks, searchable history and sessions that never get lost"
 arch=('x86_64' 'aarch64')

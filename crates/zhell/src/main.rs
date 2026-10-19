@@ -2,6 +2,7 @@
 
 mod anim;
 mod background;
+mod clipboard;
 mod copymode;
 mod dialog;
 mod draw;
@@ -244,7 +245,7 @@ struct Gui {
     preedit: Option<String>,
 
     ime_area: Option<(i32, i32)>,
-    clipboard: Option<arboard::Clipboard>,
+    clipboard: Option<clipboard::Clipboard>,
 }
 
 struct App {
@@ -312,6 +313,7 @@ impl App {
         let window = Arc::new(el.create_window(attrs)?);
         startup_mark("window");
         window.set_ime_allowed(true);
+        let clipboard = clipboard::Clipboard::new(&window);
         if cli.quake {
             glass::set_dropdown_hints(&window);
             window.set_visible(true);
@@ -404,7 +406,7 @@ impl App {
             tick_at: Instant::now(),
             preedit: None,
             ime_area: None,
-            clipboard: arboard::Clipboard::new().ok(),
+            clipboard,
         };
         gui.load_background();
 
@@ -1451,7 +1453,7 @@ impl Gui {
     }
 
     fn paste(&mut self) {
-        let Some(text) = self.clipboard.as_mut().and_then(|c| c.get_text().ok()) else { return };
+        let Some(text) = self.clipboard.as_mut().and_then(clipboard::Clipboard::get) else { return };
         self.paste_text(text);
     }
 
@@ -1512,12 +1514,7 @@ impl Gui {
     fn paste_primary(&mut self) {
         #[cfg(all(unix, not(target_os = "macos")))]
         {
-            use arboard::{GetExtLinux, LinuxClipboardKind};
-            let text = self
-                .clipboard
-                .as_mut()
-                .and_then(|c| c.get().clipboard(LinuxClipboardKind::Primary).text().ok());
-            if let Some(text) = text {
+            if let Some(text) = self.clipboard.as_mut().and_then(clipboard::Clipboard::get_primary) {
                 self.paste_text(text);
             }
         }
@@ -1559,19 +1556,13 @@ impl Gui {
             return;
         }
         let Some(c) = self.clipboard.as_mut() else { return };
-        let res = match target {
-            CopyTarget::Clipboard => c.set_text(text),
+        match target {
+            CopyTarget::Clipboard => c.set(text),
             #[cfg(all(unix, not(target_os = "macos")))]
-            CopyTarget::Primary => {
-                use arboard::{LinuxClipboardKind, SetExtLinux};
-                c.set().clipboard(LinuxClipboardKind::Primary).text(text)
-            }
+            CopyTarget::Primary => c.set_primary(text),
             #[cfg(not(all(unix, not(target_os = "macos"))))]
-            CopyTarget::Primary => Ok(()),
-            CopyTarget::File => Ok(()),
-        };
-        if let Err(e) = res {
-            log::warn!("clipboard: {e}");
+            CopyTarget::Primary => {}
+            CopyTarget::File => {}
         }
     }
 
@@ -3161,6 +3152,12 @@ impl Gui {
 }
 
 impl ApplicationHandler<UserEvent> for App {
+    fn exiting(&mut self, _el: &ActiveEventLoop) {
+        if let Some(gui) = &mut self.gui {
+            gui.clipboard = None;
+        }
+    }
+
     fn resumed(&mut self, el: &ActiveEventLoop) {
         if self.gui.is_none()
             && let Err(e) = self.init(el)

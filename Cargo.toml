@@ -3,7 +3,7 @@ resolver = "3"
 members = ["crates/*"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "GPL-3.0-or-later"
 authors = ["TheHolyOneZ"]
@@ -13,13 +13,13 @@ rust-version = "1.88"
 publish = false
 
 [workspace.dependencies]
-zhell-proto = { path = "crates/zhell-proto", version = "0.1.0" }
-zhell-core = { path = "crates/zhell-core", version = "0.1.0" }
-zhell-daemon = { path = "crates/zhell-daemon", version = "0.1.0" }
-zhell-render = { path = "crates/zhell-render", version = "0.1.0" }
-zhell-ui = { path = "crates/zhell-ui", version = "0.1.0" }
-zhell-history = { path = "crates/zhell-history", version = "0.1.0" }
-zhell-secrets = { path = "crates/zhell-secrets", version = "0.1.0" }
+zhell-proto = { path = "crates/zhell-proto", version = "0.1.1" }
+zhell-core = { path = "crates/zhell-core", version = "0.1.1" }
+zhell-daemon = { path = "crates/zhell-daemon", version = "0.1.1" }
+zhell-render = { path = "crates/zhell-render", version = "0.1.1" }
+zhell-ui = { path = "crates/zhell-ui", version = "0.1.1" }
+zhell-history = { path = "crates/zhell-history", version = "0.1.1" }
+zhell-secrets = { path = "crates/zhell-secrets", version = "0.1.1" }
 
 alacritty_terminal = "0.26"
 portable-pty = "0.9"

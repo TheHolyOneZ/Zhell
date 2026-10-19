@@ -42,6 +42,7 @@ regex.workspace = true
 
 [target.'cfg(target_os = "linux")'.dependencies]
 x11rb = "0.14"
+smithay-clipboard = "0.7"
 
 # Linux packages, built by .github/workflows/release.yml (cargo deb / cargo generate-rpm).
 [package.metadata.deb]
